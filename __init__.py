@@ -25,7 +25,7 @@ from threading import Thread
 from weakref import WeakKeyDictionary
 from functools import partial
 
-__ver__ = '0.1.0'
+__ver__ = '0.1.1'
 __author__ = 'Humble Robot Development'
 __email__ = 'Humble.Robot.Development@gmail.com'
 __date__ = 'February 2014'
@@ -138,7 +138,8 @@ class Handler(object):
 class Var(object):
 
     # basic special functions
-    def __init__(self, init, readonly=False, blocking=False, recursion=False):
+    def __init__(self, init, readonly=False, blocking=False,
+                 recursion=False, reporter=None):
         """ Var(init, readonly, blocking, recursion)
         Creates and instance of the Var class
         init - Initial value of the variable
@@ -154,6 +155,7 @@ class Var(object):
         self.readonly = readonly
         self.blocking = blocking
         self.recursion = recursion
+        self.reporter = reporter
 
     def __repr__(self):
         return 'Watched Variable: ' + self._val.__repr__()
@@ -415,17 +417,24 @@ class Var(object):
         return out
 
     # user functions
-    def update(self, value, force=False):
+    def update(self, value, force=False, silent=False):
         """ update(self, value, force=False)
         Updates the value of the variable.
         Forwards events to handlers as
         appropriate.
         """
+        # normalize input
         assert not self.readonly or force, 'This variable is read only'
         if isinstance(value, Var):  # this check is needed for inline math
             value = value._val      # functions when using Properties
+        # update value in memory
         old = copy(self._val)
         self._val = value
+        # call reporter if necessary
+        if not silent and self.reporter is not None \
+                and self.events['changed'](old, self._val):
+            self.reporter(self._val)
+        # call all other events
         self._checkEvents(old, self._val)
 
     def _checkEvents(self, old, new):
@@ -468,7 +477,8 @@ class Var(object):
 class Property(object):
 
     # Special Thanks To:
-    # http://nbviewer.ipython.org/urls/gist.github.com/ChrisBeaumont/5758381/raw/descriptor_writeup.ipynb
+    # http://nbviewer.ipython.org/urls/gist.github.com/
+    #   ChrisBeaumont/5758381/raw/descriptor_writeup.ipynb
 
     def __init__(self, default, readonly=False,
                  blocking=False, recursion=False):
