@@ -438,9 +438,17 @@ class Var(object):
         self._checkEvents(old, self._val)
 
     def _checkEvents(self, old, new):
-        for ename, econd in self.events.iteritems():
-            if econd(old, new):
-                self.__fwd__(ename)
+        # broadcast types for Python 3
+        t = type(new)
+        try:
+            old = t(old)
+        except:
+            # could not broadcast types, assume changed
+            self.__fwd__('changed')
+        else:
+            for ename, econd in self.events.items():
+                if econd(old, new):
+                    self.__fwd__(ename)
 
     def subscribe(self, event=None, fun=None, handler=None):
         """subscribe(self, event=None, fun=None, handler=None)
