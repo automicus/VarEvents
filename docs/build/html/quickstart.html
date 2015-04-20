@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>VarEvents Quick Start &mdash; VarEvents 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="VarEvents 1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="VarEvents Library" href="library.html"/>
+        <link rel="prev" title="PyISY Documentation" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> VarEvents</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">VarEvents Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#environment-setup">Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-modes">Run Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-important-notes">Other Important Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="library.html">VarEvents Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="library.html#events-definitions">Events Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#watched-variable-class">Watched Variable Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#watched-property-class">Watched Property Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#event-handler-class">Event Handler Class</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">VarEvents</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>VarEvents Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/quickstart.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="varevents-quick-start">
+<h1>VarEvents Quick Start<a class="headerlink" href="#varevents-quick-start" title="Permalink to this headline">¶</a></h1>
+<p>This guide is meant to be a basic user&#8217;s guide to the <code class="docutils literal"><span class="pre">VarEvents</span></code>
+library. It can be downloaded and run in IPython Notebook in order to
+provide an interactive tutorial. When running this document, always run
+the code block in Environment Setup first.</p>
+<p>This Notebook can be downloaded
+<a class="reference external" href="http://docs.automic.us/VarEvents/v1.0.0/VarEvents.ipynb">here</a>.</p>
+<div class="section" id="environment-setup">
+<h2>Environment Setup<a class="headerlink" href="#environment-setup" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start by importing the <code class="docutils literal"><span class="pre">VarEvents</span></code> library. The <code class="docutils literal"><span class="pre">sleep</span></code> and
+<code class="docutils literal"><span class="pre">partial</span></code> functions are also imported because we will be using them
+later.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">VarEvents</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<p>This section is a quick start to the <code class="docutils literal"><span class="pre">VarEvents</span></code> library. All the
+basics are here, but it will by no means explain all the ins and outs of
+the library.</p>
+<div class="section" id="event-handling-functions">
+<h3>Event Handling Functions<a class="headerlink" href="#event-handling-functions" title="Permalink to this headline">¶</a></h3>
+<p>Below is a basic example of an event handling funciton. This handler
+function, <code class="docutils literal"><span class="pre">change_fun</span></code>, will allow us to watch changes to our
+variables. Handlers can perform any operation, but the <code class="docutils literal"><span class="pre">VarEvents</span></code>
+library will always pass the handler instance responsible for the
+function firing as the first parameter. The only exception to this rule
+is if the target function is a class method. In that case, the <code class="docutils literal"><span class="pre">self</span></code>
+parameter will still be correctly passed first, followed by the handler
+instance. The details of the handler class will be covered more later.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="events">
+<h3>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">VarEvents</span></code> library primarily creates individual variables that
+are capable of firing different events. The possible events are stored
+in a dictionary inside of the <code class="docutils literal"><span class="pre">VarEvents</span></code> module called <code class="docutils literal"><span class="pre">Events</span></code>.
+They keys of this dictionary provide all the names of events that can be
+fired. The values of the dictionary contain conditional functions
+defining when the events should be fired.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">VarEvents</span><span class="o">.</span><span class="n">Events</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>{&#39;changed&#39;: &lt;function VarEvents.&lt;lambda&gt;&gt;,
+ &#39;decreased&#39;: &lt;function VarEvents.&lt;lambda&gt;&gt;,
+ &#39;increased&#39;: &lt;function VarEvents.&lt;lambda&gt;&gt;}
+</pre></div>
+</div>
+<p>New events can be created by adding them to this dictionary. This
+dictionary is shared amongst all the variables that are created from
+this module so whenever a new event definition is added to this
+dictionary, it may be used by any variable whether it has been created
+yet or not. The lambda function in the dictionary is what defines when
+the event should be fired and should accept two inputs (<code class="docutils literal"><span class="pre">old</span></code>,
+<code class="docutils literal"><span class="pre">new</span></code>) and return a boolean output. An output of <code class="docutils literal"><span class="pre">True</span></code> indicates
+that the event should fire. The code for the default events is below.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">events</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;changed&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">old</span> <span class="o">!=</span> <span class="n">new</span><span class="p">,</span>
+          <span class="s">&#39;increased&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">old</span> <span class="o">&lt;</span> <span class="n">new</span><span class="p">,</span>
+          <span class="s">&#39;decreased&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">old</span> <span class="o">&gt;</span> <span class="n">new</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Below are a few examples of how new events can be created.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">VarEvents</span><span class="o">.</span><span class="n">Events</span><span class="p">[</span><span class="s">&#39;toTrue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">new</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">new</span> <span class="o">!=</span> <span class="n">old</span><span class="p">)</span> <span class="k">else</span> <span class="bp">False</span>
+<span class="n">VarEvents</span><span class="o">.</span><span class="n">Events</span><span class="p">[</span><span class="s">&#39;toFalse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="ow">not</span> <span class="n">new</span> <span class="k">if</span> <span class="p">(</span><span class="n">new</span> <span class="o">!=</span> <span class="n">old</span><span class="p">)</span> <span class="k">else</span> <span class="bp">False</span>
+
+<span class="c"># longer conditional function example</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="k">def</span> <span class="nf">afternoon_changed</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">11</span> <span class="ow">and</span> <span class="n">old</span> <span class="o">!=</span> <span class="n">new</span>
+<span class="n">VarEvents</span><span class="o">.</span><span class="n">Events</span><span class="p">[</span><span class="s">&#39;afternoonChanged&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">afternoon_changed</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="event-variables">
+<h3>Event Variables<a class="headerlink" href="#event-variables" title="Permalink to this headline">¶</a></h3>
+<p>Alright, most of the basics are out of the way so let&#8217;s get started.
+We&#8217;ll start off by creating an event handling function and an event
+variable. Event variables are created with the <code class="docutils literal"><span class="pre">Var</span></code> class inside of
+the <code class="docutils literal"><span class="pre">VarEvents</span></code> library. The required parameter when creating an
+instance of this class is it&#8217;s initial value. There are also inputs for
+read only mode, blocking mode, and recursion mode. We&#8217;ll talk about
+those later.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we have the event variable, we tie handler functions to it by
+using the <code class="docutils literal"><span class="pre">subscribe</span></code> method. The subscribe method takes two
+parameters. The first is the event name, and the second is the function
+that should be called. The function should take only one parameter, as
+noted above, that will be the handler class. Since the function we
+created also takes a parameter called name, we will use the partial
+function to adapt the defined handler function to fit the required
+scheme.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The subscribe method returns an instance of the handler class. This can
+be used to unsubscribe, resubscribe, and fire the handler. Additionally,
+it contains the variable that calls the handler and the condition under
+which the handler is called. For right now, don&#8217;t worry too much about
+this. We will cover it in a bit.</p>
+<p>Now let&#8217;s change the event variable and watch our new event get fired.
+The event&#8217;s value is changed by using the update method. When we fire
+the event, the handler will be executed in a thread so as not to block
+the main thread. This is the default behaviour. It can be changed, but
+we&#8217;ll talk about that in a minute. As an aside, I will be inserting some
+random sleep statements into the sample code to do demonstrations while
+not having to worry about threads conflicting with each other.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to 6
+</pre></div>
+</div>
+<p>This might also be a good time to note that you can interact with the
+event variable class in the same way you would the traditional class of
+the value that is inside of it. In plain English, what this means, is
+that all of the methods that you would expect to be available normally,
+are still available. Allow me to demonstrate.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s">&#39;asdf&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to asdf
+ASDF
+</pre></div>
+</div>
+<p>The method <code class="docutils literal"><span class="pre">upper</span></code> is actually a method of the string inside the event
+variable. The <code class="docutils literal"><span class="pre">Var</span></code> class will automatically map all of the functions
+of it&#8217;s value. Long story short, this means that the experience of using
+the <code class="docutils literal"><span class="pre">VarEvents</span></code> library should be fairly seemless. While we are on
+this subject, here are some other cool things you can do.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">+=</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to 1
+a changed to 8
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to [1, 0, 8, 3, 9, 2, 4]
+a changed to [0, 1, 2, 3, 4, 8, 9]
+</pre></div>
+</div>
+</div>
+<div class="section" id="handler-class">
+<h3>Handler Class<a class="headerlink" href="#handler-class" title="Permalink to this headline">¶</a></h3>
+<p>Well, I said we would talk about the handler class, and there is no
+better time than the present. This class is created automatically by the
+event variable, but it could also be created manually. The class is
+created with three required parameters: <code class="docutils literal"><span class="pre">fun</span></code>, <code class="docutils literal"><span class="pre">handles</span></code>, and
+<code class="docutils literal"><span class="pre">event</span></code>. The <code class="docutils literal"><span class="pre">fun</span></code> parameter is the handler function, <code class="docutils literal"><span class="pre">handles</span></code> is
+the event variable instance that launches the handler, and <code class="docutils literal"><span class="pre">event</span></code> is
+the name of the event to which the handler responds. There are also
+inputs for read only mode, blocking mode, and recursion mode, but those
+will be covered later.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>VarEvents.Handler(&lt;functools.partial object at 0x10f5d3ba8&gt;, 5, changed) SUBSCRIBED
+</pre></div>
+</div>
+<p>The handler class has a few useful properties, they are printed below.
+It is important to note that the <code class="docutils literal"><span class="pre">running</span></code> property may not be
+accurate in recursive mode.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;handles:&#39;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">handles</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;event:&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="o">.</span><span class="n">event</span>
+<span class="k">print</span> <span class="s">&#39;recursion:&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="o">.</span><span class="n">recursion</span>
+<span class="k">print</span> <span class="s">&#39;blocking:&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="o">.</span><span class="n">blocking</span>
+<span class="k">print</span> <span class="s">&#39;running:&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="o">.</span><span class="n">running</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>handles: Watched Variable: 5
+event: changed
+recursion: False
+blocking: False
+running: False
+</pre></div>
+</div>
+<p>The handler class has four important methods: <code class="docutils literal"><span class="pre">fire</span></code>, <code class="docutils literal"><span class="pre">run</span></code>,
+<code class="docutils literal"><span class="pre">unsubscribe</span></code>, and <code class="docutils literal"><span class="pre">subscribe</span></code>. The method <code class="docutils literal"><span class="pre">fire</span></code> evaluates if and
+how the handler should run and then runs it if necessary. This is what
+gets called from inside the event variable. The method <code class="docutils literal"><span class="pre">run</span></code> executes
+the handler function in the thread in which it is executed regardless of
+anything else. These two methods should generally not be called
+directly. The <code class="docutils literal"><span class="pre">unsubscribe</span></code> and <code class="docutils literal"><span class="pre">subscribe</span></code> methods will disable and
+re-enable the handler calling respectively.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">handler</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">handler</span><span class="o">.</span><span class="n">subscribe</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to 1
+a changed to 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="event-properties">
+<h3>Event Properties<a class="headerlink" href="#event-properties" title="Permalink to this headline">¶</a></h3>
+<p>It is likely that you may want to use an event variable as a property
+inside of a class. You could do this as expected by using the Var class,
+or, alternatively, a class is provided that allows the user to create a
+more traditional style property. This class is a Python Descriptor
+class. For this reason, <strong>it must be defined at the class level</strong> and
+not inside the <code class="docutils literal"><span class="pre">__init__</span></code> function. Seriously. If you put it inside
+the <code class="docutils literal"><span class="pre">__init__</span></code> function, it will not work. This took me an
+embarrassingly long time to figure out.</p>
+<p>Properties are created with the <code class="docutils literal"><span class="pre">Property</span></code> class inside of the module.
+The class takes four inputs: <code class="docutils literal"><span class="pre">default</span></code>, <code class="docutils literal"><span class="pre">readonly</span></code>, <code class="docutils literal"><span class="pre">blocking</span></code>,
+and <code class="docutils literal"><span class="pre">recursion</span></code>. We will only cover <code class="docutils literal"><span class="pre">default</span></code> right now and the rest
+later. This class automatically generates <code class="docutils literal"><span class="pre">Var</span></code> instances as they are
+needed for different instances of their parent classes. This makes it
+potentially less memory intensive than simply generating the <code class="docutils literal"><span class="pre">Var</span></code>
+instances inside the <code class="docutils literal"><span class="pre">__init__</span></code> funtion. Whatever value is given to
+<code class="docutils literal"><span class="pre">default</span></code> will be the initial value given to the instances of <code class="docutils literal"><span class="pre">Var</span></code>.</p>
+<p>In addition to being potentially less memory intensive, there is another
+advantage to using event properties when possible. The near elimination
+of the need for the <code class="docutils literal"><span class="pre">update</span></code> method. When an event property is used,
+the value can be updated inline in the standard way. Below is an example
+of an event property demonstrating this.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="k">class</span> <span class="nc">test_class</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="o">-</span><span class="mi">900</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">test_class</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">test_class</span><span class="p">()</span>
+
+<span class="n">handler_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+<span class="n">handler_b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">))</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c"># look ma, no update call</span>
+<span class="n">b</span><span class="o">.</span><span class="n">val</span> <span class="o">+=</span> <span class="mi">999</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>a changed to 6
+b changed to 99
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="run-modes">
+<h2>Run Modes<a class="headerlink" href="#run-modes" title="Permalink to this headline">¶</a></h2>
+<p>Read Only Mode, Recursive Mode, and Blocking Mode. We are finally going
+to talk about them.</p>
+<div class="section" id="read-only-mode">
+<h3>Read Only Mode<a class="headerlink" href="#read-only-mode" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may be creating a library where you will have parameters
+that you don&#8217;t want the end user to edit. This is where Read Only Mode
+comes in. All variables in Read Only Mode may still be edited, but it
+has to be forced. This is done by using the <code class="docutils literal"><span class="pre">force</span></code> parameter in the
+<code class="docutils literal"><span class="pre">update</span></code> method.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Oops!&#39;</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Oops!
+a changed to 6
+</pre></div>
+</div>
+<p>I&#8217;ll quickly make a note here, that in order to update the value of a
+read only property in a class, you must still use the <code class="docutils literal"><span class="pre">update</span></code> method
+with the <code class="docutils literal"><span class="pre">force</span></code> parameter set.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="k">class</span> <span class="nc">test_class</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">test_class</span><span class="p">()</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Oops!&#39;</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">999</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Oops!
+a changed to 999
+</pre></div>
+</div>
+<p>This doesn&#8217;t make it impossible for the end user to edit a read only
+variable, but it makes the end user take an additional step. This should
+be enough to stop the user from accidentally interferring with a read
+only variable while still allowing them to do so if they absolutely
+want.</p>
+<p>Read Only Mode can be activated by toggling the <code class="docutils literal"><span class="pre">readonly</span></code> parameter
+to <code class="docutils literal"><span class="pre">True</span></code> when instanciating either a <code class="docutils literal"><span class="pre">Var</span></code> or <code class="docutils literal"><span class="pre">Property</span></code> class.
+It can also be changed in the <code class="docutils literal"><span class="pre">Var</span></code> class by changing the property
+called <code class="docutils literal"><span class="pre">readonly</span></code>.</p>
+</div>
+<div class="section" id="recursive-mode">
+<h3>Recursive Mode<a class="headerlink" href="#recursive-mode" title="Permalink to this headline">¶</a></h3>
+<p>By default, <code class="docutils literal"><span class="pre">VarEvents</span></code> runs in Non-Recursive Mode. Put simply, this
+means that each handler instance is limited to only one running thread
+at a time. This is done in order to prevent sticky situations with
+accidental recursion. The following examples demonstrate why this is a
+good thing. The first example runs in the default Non-Recursive Mode and
+executes correctly.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&#39;Countdown Started:&#39;</span>
+    <span class="k">while</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">countdown</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Countdown Started:
+5
+4
+3
+2
+1
+</pre></div>
+</div>
+<p>If more than one instance of the handler is allowed to run at a time,
+then each time the variable is decremented, a new thread of the handler
+function would run. Some users may argue that the automatic recursion
+could have allowed the while loop to be removed, and that would be true.
+However, I felt that this would generally create more obfusicated
+spaghetti code, so, as a design choice, I turned it off by default.
+Below is the same code with recursion turned on.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&#39;Countdown Started:&#39;</span>
+    <span class="k">while</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursion</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">countdown</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Countdown Started:
+5
+Countdown Started:
+4
+4
+3
+Countdown Started:
+3
+Countdown Started:
+2
+2
+Countdown Started:
+Countdown Started:
+Countdown Started:
+Countdown Started:
+</pre></div>
+</div>
+<p>Woah, ok, that was worse. Just for the sake of conversation, let&#8217;s fix
+that code so it is safe for recursion.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">handles</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursion</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">countdown</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Countdown Started:&#39;</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Countdown Started:
+5
+4
+3
+2
+1
+</pre></div>
+</div>
+<p>So the code can be made safe for recursion, and there is nothing wrong
+with it. I just personally feel that the first example more clear than
+the latter. If you need recursion for your project, its available.
+However, if you don&#8217;t need it, I would suggest not using it.</p>
+<p>Recursive Mode can be activated by toggling the <code class="docutils literal"><span class="pre">recursion</span></code> parameter
+to <code class="docutils literal"><span class="pre">True</span></code> when instanciating a <code class="docutils literal"><span class="pre">Var</span></code>, <code class="docutils literal"><span class="pre">Property</span></code>, or <code class="docutils literal"><span class="pre">Handler</span></code>
+class. It can also be changed in either the <code class="docutils literal"><span class="pre">Var</span></code> or <code class="docutils literal"><span class="pre">Handler</span></code> class
+by changing the property called <code class="docutils literal"><span class="pre">recursion</span></code>.</p>
+</div>
+<div class="section" id="blocking-mode">
+<h3>Blocking Mode<a class="headerlink" href="#blocking-mode" title="Permalink to this headline">¶</a></h3>
+<p>By default, <code class="docutils literal"><span class="pre">VarEvents</span></code> runs in Non-Blocking Mode. In Non-Blocking
+Mode, a thread is spawned every time an event function is run so as to
+not block the main thread. However, Non-Blocking Mode has some
+surprising properties. It is important to note that if the variable is
+updated outside of the handler, it will also be updated inside of the
+handler. This can be rectified by running the handler in Blocking Mode,
+but that solution may not always be appropriate. In order to prevent
+this, a method called copy is available on each of the event variables.
+Let&#8217;s explore this.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># let&#39;s first see where this can go wrong</span>
+<span class="k">def</span> <span class="nf">wait_and_print</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">wait_and_print</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">10</span>
+</pre></div>
+</div>
+<p>It may seem like the first event is being skipped, however, the event is
+still being fired on the first change. Because the event is allowed to
+run a seperate thread, the second change happens before the handler
+prints the value. This results in the second value being printed. Let&#8217;s
+look at what happens when we turn on Blocking Mode.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># blocking mode turned on this time</span>
+<span class="k">def</span> <span class="nf">wait_and_print</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">wait_and_print</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">5</span>
+<span class="mi">10</span>
+</pre></div>
+</div>
+<p>There we go, now that just makes so much more sense. Why doesn&#8217;t this
+dumb library just do this by default? That would make so much more
+sense! Well, as before, design choice. Generally speaking, your handlers
+will probably take much longer to run and if they are run in a seperate
+thread as oppsed to the main thread, the rest of your application can
+continue to run. This is generally desireable. If you would like to keep
+the handlers in Non-Blocking Mode, but ignore automatic updates, the
+<code class="docutils literal"><span class="pre">copy</span></code> method is available.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># using the copy method</span>
+<span class="k">def</span> <span class="nf">wait_and_print</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&#39;Value was&#39;</span><span class="p">,</span> <span class="n">val</span>
+    <span class="k">print</span> <span class="s">&#39;Value is now&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">wait_and_print</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Value was 5
+Value is now 10
+</pre></div>
+</div>
+<p>Hopefully that clears up more confusion than it causes.</p>
+<p>Blocking Mode can be activated by toggling the <code class="docutils literal"><span class="pre">blocking</span></code> parameter to
+<code class="docutils literal"><span class="pre">True</span></code> when instanciating a <code class="docutils literal"><span class="pre">Var</span></code>, <code class="docutils literal"><span class="pre">Property</span></code>, or <code class="docutils literal"><span class="pre">Handler</span></code>
+class. It can also be changed in either the <code class="docutils literal"><span class="pre">Var</span></code> or <code class="docutils literal"><span class="pre">Handler</span></code> class
+by changing the property called <code class="docutils literal"><span class="pre">blocking</span></code>.</p>
+</div>
+</div>
+<div class="section" id="other-important-notes">
+<h2>Other Important Notes<a class="headerlink" href="#other-important-notes" title="Permalink to this headline">¶</a></h2>
+<p>This section contains other random thoughts and warnings that I thought
+of while typing the rest of this document. Hopefully this section can
+eliminate some common frustrations.</p>
+<div class="section" id="overwriting-an-event-variable">
+<h3>Overwriting an Event Variable<a class="headerlink" href="#overwriting-an-event-variable" title="Permalink to this headline">¶</a></h3>
+<p>I wanted to take a second to demonstrate the importance of the
+<code class="docutils literal"><span class="pre">update</span></code> method in event variables. Take a look at this example.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">handles</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Watched Variable: 5
+a changed to 6
+Watched Variable: 6
+7
+</pre></div>
+</div>
+<p>In that example, the first expected event is fired, but not the second.
+This is because the <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">7</span></code> line indicates to the Python interpreter
+to change the variable <code class="docutils literal"><span class="pre">a</span></code> to an instance of <code class="docutils literal"><span class="pre">int</span></code> that equals
+<code class="docutils literal"><span class="pre">7</span></code>. This is very different from updating that value stored inside the
+<code class="docutils literal"><span class="pre">Val</span></code> instance and is also why the <code class="docutils literal"><span class="pre">repr</span></code> string changes in the
+above example. Event properties inside of classes are able to intercept
+the set action raised by Python (with Descripter special functions) such
+that when they are inside the class, the update function is not
+required. However, if they are copied outside of the class, the update
+function is again required. This next example demonstrates that.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">change_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s">&#39;changed to&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">handles</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">test_class</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">VarEvents</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">test_class</span><span class="p">()</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&#39;changed&#39;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">change_fun</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">val_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">val_a</span><span class="p">)</span>
+<span class="n">val_a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">val_a</span><span class="p">)</span>
+<span class="n">val_a</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">val_a</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Watched Variable: 0
+a changed to 6
+Watched Variable: 6
+Watched Variable: 6
+a changed to 7
+Watched Variable: 7
+8
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="library.html" class="btn btn-neutral float-right" title="VarEvents Library">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="PyISY Documentation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Ryan M. Kraus.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -483,11 +483,12 @@ class Var(object):
         """
         Subscribes a handler to an event. Event and fun must be supplied if
         handler is not. If handler is supplied, event and fun will be ignored.
+        This method returns an object of type :class:`~VarEvents.Handler`
 
         |  event: The name of the event to subscribe to (ie 'changed').
         |  fun: The function to call when the given event occurs.
         |  handler: Optinally, a pre-existing event handler may be alternatively
-                    supplied.
+                    supplied. This is of type :class:`~VarEvents.Handler`
         """
         # create handler if neccessary
         if handler is None:

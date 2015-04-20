@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>VarEvents Library &mdash; VarEvents 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="VarEvents 1.0.0 documentation" href="index.html"/>
+        <link rel="prev" title="VarEvents Quick Start" href="quickstart.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> VarEvents</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">VarEvents Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#environment-setup">Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#run-modes">Run Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#other-important-notes">Other Important Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">VarEvents Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#events-definitions">Events Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watched-variable-class">Watched Variable Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watched-property-class">Watched Property Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#event-handler-class">Event Handler Class</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">VarEvents</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>VarEvents Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/library.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-VarEvents">
+<span id="varevents-library"></span><h1>VarEvents Library<a class="headerlink" href="#module-VarEvents" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="events-definitions">
+<h2>Events Definitions<a class="headerlink" href="#events-definitions" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="VarEvents.Events">
+<code class="descclassname">VarEvents.</code><code class="descname">Events</code><em class="property"> = {'decreased': &lt;function &lt;lambda&gt; at 0x2b06f7ef8488&gt;, 'changed': &lt;function &lt;lambda&gt; at 0x2b06f7ef8398&gt;, 'increased': &lt;function &lt;lambda&gt; at 0x2b06f7ef8410&gt;}</em><a class="headerlink" href="#VarEvents.Events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of events that can be raised by watched variables. Custom events may
+be added to this dictionary and they will be raised when their functions return
+a True value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="watched-variable-class">
+<h2>Watched Variable Class<a class="headerlink" href="#watched-variable-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VarEvents.Var">
+<em class="property">class </em><code class="descclassname">VarEvents.</code><code class="descname">Var</code><span class="sig-paren">(</span><em>init</em>, <em>readonly=False</em>, <em>blocking=False</em>, <em>recursion=False</em>, <em>reporter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Watched variable class. This class imitates the variable to which it is
+assigned. It then raises any appropriate events when it is updated.</p>
+<div class="line-block">
+<div class="line">init: The value the variable should be initialized to. This can be of
+virtually an type.</div>
+<div class="line">readonly: [Optional] If the variable should allow itself to be easily
+updated. Readonly variables can still force an update. Default
+is False.</div>
+<div class="line">blocking: [Optional] If this variable&#8217;s event handlers should be
+defaulted to block the main thread or not. Default is False.</div>
+<div class="line">recursion: [Optional] If this variable&#8217;s event handlers should be
+defaulted to allow recursion. Default is False.</div>
+<div class="line">reporter: A &#8216;reporter function&#8217; that is called any time the variable is
+updated. A silent update will not call this function.</div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>events</strong> &#8211; Events that this variable is watching for.</li>
+<li><strong>readonly</strong> &#8211; If this variable is readonly.</li>
+<li><strong>blocking</strong> &#8211; If this variable blocks the main thread.</li>
+<li><strong>recursion</strong> &#8211; If this variable allows recursion.</li>
+<li><strong>reporter</strong> &#8211; Reporter function for this variable.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="VarEvents.Var.__fwd__">
+<code class="descname">__fwd__</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.__fwd__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.__fwd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forwards an event to a handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>init</em>, <em>readonly=False</em>, <em>blocking=False</em>, <em>recursion=False</em>, <em>reporter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Var(init, readonly, blocking, recursion)
+Creates and instance of the Var class
+init - Initial value of the variable
+readonly - Optional, Toggles Read Only Mode
+blocking - Optional, Toggles Blocking Mode
+recursion - Optional, Toggles Recurison Mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.__proxy__">
+<code class="descname">__proxy__</code><span class="sig-paren">(</span><em>fun</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.__proxy__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.__proxy__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a proxy object that allows its attributes to be called.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VarEvents.Var.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#VarEvents.Var.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a duplicate of the current value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>event=None</em>, <em>fun=None</em>, <em>handler=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.subscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribes a handler to an event. Event and fun must be supplied if
+handler is not. If handler is supplied, event and fun will be ignored.
+This method returns an object of type <a class="reference internal" href="#VarEvents.Handler" title="VarEvents.Handler"><code class="xref py py-class docutils literal"><span class="pre">Handler</span></code></a></p>
+<div class="line-block">
+<div class="line">event: The name of the event to subscribe to (ie &#8216;changed&#8217;).</div>
+<div class="line">fun: The function to call when the given event occurs.</div>
+<div class="line">handler: Optinally, a pre-existing event handler may be alternatively
+supplied. This is of type <a class="reference internal" href="#VarEvents.Handler" title="VarEvents.Handler"><code class="xref py py-class docutils literal"><span class="pre">Handler</span></code></a></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>eid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unsubscribes the handler with the given id.</p>
+<div class="line-block">
+<div class="line">eid: The event id to unsubscribe.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Var.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>value</em>, <em>force=False</em>, <em>silent=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Var.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Var.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the value of the variable. Forwards events to handlers as
+appropriate.</p>
+<div class="line-block">
+<div class="line">value: The new value for the variable.</div>
+<div class="line">force: If this update should be forced (for readonly variables).</div>
+<div class="line">silent: If this update should be silent (not call the reporter).</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="watched-property-class">
+<h2>Watched Property Class<a class="headerlink" href="#watched-property-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VarEvents.Property">
+<em class="property">class </em><code class="descclassname">VarEvents.</code><code class="descname">Property</code><span class="sig-paren">(</span><em>default</em>, <em>readonly=False</em>, <em>blocking=False</em>, <em>recursion=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property Class. This allows a watched variable to act as an instance level
+variable in a class. It MUST be an instance level variable. It may not be
+created during init or any other method. This class will imitate a
+<a class="reference internal" href="#VarEvents.Var" title="VarEvents.Var"><code class="xref py py-class docutils literal"><span class="pre">Var</span></code></a> class except that the update function need not be
+called when accessing this variable as an instance level variable inside an
+object.</p>
+<div class="line-block">
+<div class="line">default: The value the variable should be initialized to. This can be of
+virtually an type.</div>
+<div class="line">readonly: [Optional] If the variable should allow itself to be easily
+updated. Readonly variables can still force an update. Default
+is False.</div>
+<div class="line">blocking: [Optional] If this variable&#8217;s event handlers should be
+defaulted to block the main thread or not. Default is False.</div>
+<div class="line">recursion: [Optional] If this variable&#8217;s event handlers should be
+defaulted to allow recursion. Default is False.</div>
+</div>
+<dl class="attribute">
+<dt id="VarEvents.Property.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#VarEvents.Property.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="event-handler-class">
+<h2>Event Handler Class<a class="headerlink" href="#event-handler-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VarEvents.Handler">
+<em class="property">class </em><code class="descclassname">VarEvents.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>fun</em>, <em>handles</em>, <em>event</em>, <em>eid=None</em>, <em>blocking=False</em>, <em>recursion=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler class that fires events when appropriate. This is returned when an
+event is created. It can also be used to unsubscribe from a watched
+variable&#8217;s event.</p>
+<div class="line-block">
+<div class="line">fun: Handler function to run</div>
+<div class="line">handles: Var instance to respond to</div>
+<div class="line">event: String for name of event to respond to</div>
+<div class="line">eid: Optional, ID of handler if subscribed</div>
+<div class="line">blocking: Optional, Toggles Blocking Mode</div>
+<div class="line">recursion: Optional, Toggle Recursive Mode</div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>blocking</strong> &#8211; Controls if the handler should run as a thread. When
+blocking is off (False), the event runs in a thread and does
+not block the thread from which it was fired.</li>
+<li><strong>recursion</strong> &#8211; Controls if the handler should be allowed to run
+recusively. If this is off (False), the event can only be
+running once at any time.</li>
+<li><strong>running</strong> &#8211; Indicates if the handler is currently running.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="VarEvents.Handler.__del__">
+<code class="descname">__del__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.__del__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.__del__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unsubscribe from events on deletion. Don&#8217;t rely on this.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Handler.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an informative string about the handler.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VarEvents.Handler.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#VarEvents.Handler.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Handler.fire">
+<code class="descname">fire</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.fire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.fire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fires the event as a thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Handler.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the handler function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Handler.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.subscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the handler&#8217;s subscription to events.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VarEvents.Handler.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/VarEvents.html#Handler.unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VarEvents.Handler.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the handler&#8217;s subscription to events.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral" title="VarEvents Quick Start"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Ryan M. Kraus.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
