@@ -1,10 +1,10 @@
-.. PyISY documentation master file, created by
+.. VarEvents documentation master file, created by
    sphinx-quickstart on Sat Apr 18 22:30:37 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-PyISY Documentation 
-===================
+VarEvents Documentation 
+=======================
 
 .. image:: http://i0.wp.com/automic.us/wordpress/wp-content/uploads/2014/02/ve_icon.png
 
