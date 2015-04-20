@@ -1,5 +1,6 @@
+VarEvents
 
-README
+Event raising variables.
 
 VarEvents is is a Python module that provides a 
 lightweight solution for responding to changes 
@@ -11,5 +12,9 @@ called when a variable changes, increments, or
 decrements. Additional events may also be 
 easily defined.
 
-For more information, visit:
-    https://code.google.com/p/py-varevents/
+For more information, visit the Autimucus website.
+
+AUTHOR: Ryan Kraus
+DATE: 2/2014
+EMAIL: automicus@gmail.com
+WEBSITE: http://automic.us

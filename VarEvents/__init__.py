@@ -4,8 +4,8 @@ VarEvents Module
     Var Class
     Property Class
 
-Copyright 2104 Humble Robot Development
-               Humble.Robot.Development@gmail.com
+Copyright 2105 Ryan M. Kraus
+               automicus@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,29 +25,46 @@ from threading import Thread
 from weakref import WeakKeyDictionary
 from functools import partial
 
-__ver__ = '0.1.1'
-__author__ = 'Humble Robot Development'
-__email__ = 'Humble.Robot.Development@gmail.com'
-__date__ = 'February 2014'
+__version__ = '1.0.0'
+__author__ = 'Ryan M. Kraus'
+__email__ = 'automicus@gmail.com'
+__date__ = 'April 2015'
+__website__ = 'http://automic.us'
 
 Events = {'changed': lambda old, new: old != new,
           'increased': lambda old, new: old < new,
           'decreased': lambda old, new: old > new}
+"""
+Dictionary of events that can be raised by watched variables. Custom events may
+be added to this dictionary and they will be raised when their functions return
+a True value.
+"""
 
 
 class Handler(object):
+    """
+    Handler class that fires events when appropriate. This is returned when an
+    event is created. It can also be used to unsubscribe from a watched
+    variable's event.
+
+    |  fun: Handler function to run
+    |  handles: Var instance to respond to
+    |  event: String for name of event to respond to
+    |  eid: Optional, ID of handler if subscribed
+    |  blocking: Optional, Toggles Blocking Mode
+    |  recursion: Optional, Toggle Recursive Mode
+
+    :ivar blocking: Controls if the handler should run as a thread. When
+                    blocking is off (False), the event runs in a thread and does
+                    not block the thread from which it was fired.
+    :ivar recursion: Controls if the handler should be allowed to run
+                     recusively. If this is off (False), the event can only be
+                     running once at any time.
+    :ivar running: Indicates if the handler is currently running.
+    """
 
     def __init__(self, fun, handles, event, eid=None,
                  blocking=False, recursion=False):
-        """ Handler(fun, handles, event, eid, blocking, recursion)
-        Creates a Handler instance.
-        fun - Handler function to run
-        handles - Var instance to respond to
-        event - String for name of event to respond to
-        eid - Optional, ID of handler if subscribed
-        blocking - Optional, Toggles Blocking Mode
-        recursion - Optional, Toggle Recursive Mode
-        """
         # store input
         self._fun = fun
         self.handles = handles
@@ -59,6 +76,7 @@ class Handler(object):
         self._thread = None
 
     def __repr__(self):
+        """ Returns an informative string about the handler. """
         out = 'VarEvents.Handler(' + str(self._fun) + ', ' + \
             str(self.handles) + ', ' + self.event + ') '
         if self._id is not None:
@@ -68,13 +86,12 @@ class Handler(object):
         return out
 
     def __del__(self):
+        """ Unsubscribe from events on deletion. Don't rely on this. """
         if self._id is not None:
-            self.remove()
+            self.unsubscribe()
 
     def fire(self):
-        """ fire(self)
-        Fires the event as a thread
-        """
+        """ Fires the event as a thread. """
         if self.blocking:
             self.run()
         elif self.recursion or not self.running:
@@ -83,24 +100,16 @@ class Handler(object):
             self._thread.start()
 
     def run(self):
-        """run(self)
-        Runs the handler function
-        """
+        """ Runs the handler function. """
         self._fun(self)
         self._thread = None
 
     @property
     def running(self):
-        """ running
-        Shows whether the handler is already running
-        """
         return self._thread is not None
 
     @property
     def blocking(self):
-        """ blocking
-        Shows whether this handler will block the main thread
-        """
         return self._blocking
 
     @blocking.setter
@@ -109,10 +118,6 @@ class Handler(object):
 
     @property
     def recursion(self):
-        """ recursion
-        Shows whether recursion is possible for this handler.
-        Only possible when in non-blocking mode.
-        """
         return self._recursion and not self._blocking
 
     @recursion.setter
@@ -120,22 +125,40 @@ class Handler(object):
         self._recursion = val
 
     def unsubscribe(self):
-        """ unsubscribe(self)
-        Removes the handler's subscription
-        """
+        """ Removes the handler's subscription to events. """
         assert self._id is not None, 'Handler is not subscribed'
         self.handles.unsubscribe(self._id)
         self._id = None
 
     def subscribe(self):
-        """ subscribe(self)
-        Adds the handler's subscription
-        """
+        """ Adds the handler's subscription to events. """
         assert self._id is None, 'Handler is already subscribed'
         self.handles.subscribe(handler=self)
 
 
 class Var(object):
+    """
+    Watched variable class. This class imitates the variable to which it is
+    assigned. It then raises any appropriate events when it is updated.
+
+    |  init: The value the variable should be initialized to. This can be of
+             virtually an type.
+    |  readonly: [Optional] If the variable should allow itself to be easily
+                 updated. Readonly variables can still force an update. Default
+                 is False.
+    |  blocking: [Optional] If this variable's event handlers should be
+                 defaulted to block the main thread or not. Default is False.
+    |  recursion: [Optional] If this variable's event handlers should be
+                  defaulted to allow recursion. Default is False.
+    |  reporter: A 'reporter function' that is called any time the variable is
+                 updated. A silent update will not call this function.
+
+    :ivar events: Events that this variable is watching for.
+    :ivar readonly: If this variable is readonly.
+    :ivar blocking: If this variable blocks the main thread.
+    :ivar recursion: If this variable allows recursion.
+    :ivar reporter: Reporter function for this variable.
+    """
 
     # basic special functions
     def __init__(self, init, readonly=False, blocking=False,
@@ -405,12 +428,14 @@ class Var(object):
 
     # custom special functions
     def __fwd__(self, event):
+        """ Forwards an event to a handler. """
         handlers = [h for h in self._handlers if
                     h is not None and h.event is event]
         for h in handlers:
             h.fire()
 
     def __proxy__(self, fun, *args, **kwargs):
+        """ Creates a proxy object that allows its attributes to be called. """
         old = copy(self._val)
         out = fun(*args, **kwargs)
         self._checkEvents(old, self._val)
@@ -418,10 +443,13 @@ class Var(object):
 
     # user functions
     def update(self, value, force=False, silent=False):
-        """ update(self, value, force=False)
-        Updates the value of the variable.
-        Forwards events to handlers as
+        """
+        Updates the value of the variable. Forwards events to handlers as
         appropriate.
+
+        |  value: The new value for the variable.
+        |  force: If this update should be forced (for readonly variables).
+        |  silent: If this update should be silent (not call the reporter).
         """
         # normalize input
         assert not self.readonly or force, 'This variable is read only'
@@ -438,6 +466,7 @@ class Var(object):
         self._checkEvents(old, self._val)
 
     def _checkEvents(self, old, new):
+        """ Calls appropriate events. """
         # broadcast types for Python 3
         t = type(new)
         try:
@@ -451,10 +480,14 @@ class Var(object):
                     self.__fwd__(ename)
 
     def subscribe(self, event=None, fun=None, handler=None):
-        """subscribe(self, event=None, fun=None, handler=None)
-        Subscribes a handler to an event.
-        event and fun must be supplied if handler is not.
-        If handler is supplied, event and fun will be ignored.
+        """
+        Subscribes a handler to an event. Event and fun must be supplied if
+        handler is not. If handler is supplied, event and fun will be ignored.
+
+        |  event: The name of the event to subscribe to (ie 'changed').
+        |  fun: The function to call when the given event occurs.
+        |  handler: Optinally, a pre-existing event handler may be alternatively
+                    supplied.
         """
         # create handler if neccessary
         if handler is None:
@@ -470,19 +503,37 @@ class Var(object):
         return handler
 
     def unsubscribe(self, eid):
-        """unsubscribe(self, eid)
-        Unsubscribes the handler with the given id
+        """
+        Unsubscribes the handler with the given id.
+
+        |  eid: The event id to unsubscribe.
         """
         self._handlers[eid] = None
 
     def copy(self):
-        """copy (self)
-        Provides a duplicate of the current value
-        """
+        """ Provides a duplicate of the current value. """
         return copy(self._val)
 
 
 class Property(object):
+    """
+    Property Class. This allows a watched variable to act as an instance level
+    variable in a class. It MUST be an instance level variable. It may not be
+    created during init or any other method. This class will imitate a
+    :class:`~VarEvents.Var` class except that the update function need not be
+    called when accessing this variable as an instance level variable inside an
+    object.
+
+    |  default: The value the variable should be initialized to. This can be of
+                virtually an type.
+    |  readonly: [Optional] If the variable should allow itself to be easily
+                 updated. Readonly variables can still force an update. Default
+                 is False.
+    |  blocking: [Optional] If this variable's event handlers should be
+                 defaulted to block the main thread or not. Default is False.
+    |  recursion: [Optional] If this variable's event handlers should be
+                  defaulted to allow recursion. Default is False.
+    """
 
     # Special Thanks To:
     # http://nbviewer.ipython.org/urls/gist.github.com/
